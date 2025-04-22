@@ -1,0 +1,52 @@
+from collections import defaultdict
+
+class Graph:
+    def __init__(self, vertices):
+        self.graph = defaultdict(list)
+        self.V = vertices
+
+    def add_edge(self, u, v):
+        self.graph[u].append(v)
+
+    def dfs_util(self, v, visited, result):
+        visited[v] = True
+        result.append(chr(ord('a') + v))
+        for i in self.graph[v]:
+            if not visited[i]:
+                self.dfs_util(i, visited, result)
+
+    def dfs(self, start):
+        visited = [False] * self.V
+        result = []
+        self.dfs_util(start, visited, result)
+        return result
+
+# Create graph from matrix
+matrix = [
+    [0, 4, 0, 0, 0, 0, 0, 8, 0],
+    [4, 0, 8, 0, 0, 0, 0, 11, 0],
+    [0, 8, 0, 7, 0, 4, 0, 0, 2],
+    [0, 0, 7, 0, 9, 14, 0, 0, 0],
+    [0, 0, 0, 9, 0, 10, 0, 0, 0],
+    [0, 0, 4, 14, 10, 0, 2, 0, 0],
+    [0, 0, 0, 0, 0, 2, 0, 1, 6],
+    [8, 11, 0, 0, 0, 0, 1, 0, 7],
+    [0, 0, 2, 0, 0, 0, 6, 7, 0]
+]
+
+g = Graph(9)
+
+# Add edges to graph
+for i in range(9):
+    for j in range(9):
+        if matrix[i][j] != 0:
+            g.add_edge(i, j)
+
+# Perform DFS starting from vertex 'a' (index 0)
+dfs_result = g.dfs(0)
+
+print("DFS traversal starting from vertex 'a':", ' -> '.join(dfs_result))
+
+
+[OUTPUT]
+DFS traversal starting from vertex 'a': a -> b -> c -> d -> e -> f -> g -> h -> i
